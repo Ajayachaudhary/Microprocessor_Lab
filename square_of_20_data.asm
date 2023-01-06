@@ -1,12 +1,25 @@
-MVI A,0B
-ANI 0F
-ADI 01H
-JPE EVEN
-JPO ODD
+	   LXI H,3000
+	   LXI D,4000
+	   MVI C,03
 
-EVEN:
-	MVI C,22
-	HLT
-ODD:
-	MVI C,11
-	HLT
+L1:	   MOV A,M
+	   CPI 0F
+	   MVI A,00
+	   MOV B,M
+	   JC L2
+	   JMP NEXT
+
+L2:	   ADD M
+	   DCR B
+	   JNZ L2
+	   STAX D
+	   INX D
+	   DCR C
+	   JNZ NEXT
+	   HLT
+
+NEXT:	   INX H
+	   JMP L1
+
+#ORG 3000H
+#DB 02H,FFH,03H
